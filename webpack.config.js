@@ -9,14 +9,14 @@ module.exports = {
     module: { //sem budeme zanedlouho vkládat transformační moduly
         loaders : [
             {
-                test: /.css$/,
-                loader: "style!css",
-                exclude: "node_modules"
-            },
-            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 loader: 'eslint-loader'
+            },
+            {
+                test: /.scss$/,
+                loaders: [ "style", "css", "sass" ],
+                exclude: "node_modules"
             }
         ]
     },

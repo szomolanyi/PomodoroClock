@@ -1,0 +1,135 @@
+$main-width: 600px;
+
+html, body {
+    height : 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+div.col {
+    border: 2px solid green;
+    display: flex;
+    align-items: center;
+}
+div.main {
+    width: $main-width;
+    border: 2px solid black;
+    height: $main-width/2+200px;
+}
+div.row {
+    width: $main-width;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 2px solid red;
+}
+div.indicator {
+    width: $main-width/2; /* Set the size of the progress bar */
+    height: $main-width/2;
+    position: relative;
+    top:50px;
+    left: $main-width/4;
+    border: 3px solid blue;
+}
+div.prompt {
+    text-align: center;
+    font-size: 1.5em;
+}
+h1 {
+    background-color: red
+}
+div#work, div#rest {
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+}
+div.main p {
+  font-family: 'Pacifico', cursive;
+  font-size: 3em;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.wrapper {
+  width: $main-width/2; /* Set the size of the progress bar */
+  height: $main-width/2;
+  position: absolute; /* Enable clipping */
+  clip: rect(0px, $main-width/2, $main-width/2, $main-width/4); /* Hide half of the progress bar */
+}
+/* Set the sizes of the elements that make up the progress bar */
+.circle {
+  width: $main-width*0.4;
+  height: $main-width*0.4;
+  border: $main-width/20 solid green;
+  border-radius: $main-width/4;
+  position: absolute;
+  clip: rect(0px, $main-width/4, $main-width/2, 0px);
+}
+div#time {
+  position: absolute;
+  width: $main-width/2; /* Set the size of the progress bar */
+  height: $main-width/2;
+  border: 2px solid yellow;
+  vertical-align: middle;
+  font-size: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+div#time-text {
+  margin-top: 50%;
+  margin-bottom: 50%;
+  font-family: 'Roboto'
+}
+
+/* Using the data attributes for the animation selectors. */
+/* Base settings for all animated elements */
+div[data-anim~=base] {
+  -webkit-animation-iteration-count: 1;  /* Only run once */
+  -webkit-animation-fill-mode: forwards; /* Hold the last keyframe */
+  -webkit-animation-timing-function:linear; /* Linear animation */
+}
+
+.wrapper[data-anim~=wrapper] {
+  -webkit-animation-duration: 0.01s; /* Complete keyframes asap */
+  -webkit-animation-delay: 3s; /* Wait half of the animation */
+  -webkit-animation-name: close-wrapper; /* Keyframes name */
+}
+
+.circle[data-anim~=left] {
+  -webkit-animation-duration: 6s; /* Full animation time */
+  -webkit-animation-name: left-spin;
+}
+
+.circle[data-anim~=right] {
+  -webkit-animation-duration: 3s; /* Half animation time */
+  -webkit-animation-name: right-spin;
+}
+/* Rotate the right side of the progress bar from 0 to 180 degrees */
+@-webkit-keyframes right-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(180deg);
+  }
+}
+/* Rotate the left side of the progress bar from 0 to 360 degrees */
+@-webkit-keyframes left-spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+/* Set the wrapper clip to auto, effectively removing the clip */
+@-webkit-keyframes close-wrapper {
+  to {
+    clip: rect(auto, auto, auto, auto);
+  }
+}
+

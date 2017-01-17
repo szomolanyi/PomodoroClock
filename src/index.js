@@ -1,5 +1,139 @@
-require("./styles/style.css");
+//require("./styles/style.css");
+require("./styles/style.scss");
 require("jquery");
 
 // Main app
 
+var state={
+    work_running: false,
+    rest_running: false,
+    paused: false,
+    work_time: 2,
+    rest_time: 1,
+    end_time: undefined,
+    remaining_time: {
+      min: 20,
+      sec: 5
+    },
+    render: function() {
+        $('#work').text(this.work_time+' min');
+        $('#rest').text(this.rest_time+' min');
+        $('#time-text').text(this.lpad(this.remaining_time.min.toString(), '0', 2)+':'+this.lpad(this.remaining_time.sec.toString(), '0', 2));
+    },
+    setEndTime: function() {
+      /* sets end_time from remaining_time */
+      this.end_time=new Date();
+      this.end_time.setMinutes(this.end_time.getMinutes() + this.remaining_time.min);
+      this.end_time.setSeconds(this.end_time.getSeconds() + this.remaining_time.sec);
+    },
+    updateRemainfromEndTime: function() {
+      /* updates remain from curr_time and end_time */
+      var curr_time=new Date();
+      var diff=Math.round((this.end_time-curr_time)/1000);
+      this.remaining_time.min=Math.floor(diff/60);
+      this.remaining_time.sec=diff%60;
+    },
+    resetRemain: function() {
+      //reset remain on begin
+      if (this.rest_running) {
+        this.remaining_time.min=this.rest_time;
+        this.remaining_time.sec=0;
+      }
+      else {
+        this.remaining_time.min=this.work_time;
+        this.remaining_time.sec=0;
+      }
+    },
+    onStart: function() {
+      console.log('start click');
+      var self=this;
+      if (this.work_running || this.rest_running) {
+        if (this.paused) { //resume from pause
+          this.paused=false;
+          this.setEndTime();
+          setTimeout(this.updateStatus, 500, self);
+        }
+        else { //pause
+          this.paused=true;
+          this.updateRemainfromEndTime();
+        }
+      }
+      else { // start
+        this.work_running=true;
+        this.rest_running=false;
+        this.resetRemain();
+        this.setEndTime();
+        setTimeout(this.updateStatus, 500, self);
+      }
+    },
+    updateStatus: function(self) {
+      if ((self.work_running || self.rest_running) && !self.paused) {
+        var curr_time=new Date();
+        if (curr_time >= self.end_time) {
+          // end of period
+          self.work_running=!self.work_running;
+          self.rest_running=!self.rest_running;
+          self.resetRemain();
+          self.setEndTime();
+        }
+        else {
+          self.updateRemainfromEndTime();
+        }
+        setTimeout(self.updateStatus, 500, self);
+        self.render();
+      }
+    },
+    resetAll: function() {
+      this.work_running=false;
+      this.paused=false;
+      this.rest_running=false;
+      this.resetRemain();
+      this.setEndTime();
+    },
+    modifyWork: function(inc) {
+      if (this.work_running && !this.paused) return;
+      this.work_time+=inc;
+      if (this.work_time<0) this.work_time=0;
+      if (this.work_running || (!this.work_running && !this.rest_running)) {
+        this.resetAll();
+      }
+      this.render();
+    },
+    modifyRest: function(inc) {
+      if (this.rest_running && !this.paused) {
+        return;
+      }
+      this.rest_time+=inc;
+      if (this.rest_time<0) this.rest_time=0;
+      if (this.rest_running || (!this.work_running && !this.rest_running)) {
+        this.resetAll();
+      }
+      this.render();
+    },
+    rmRest: function() {
+        if (this.rest_time > 0) {
+            this.rest_time-=1;
+            this.render();
+        }
+    },
+    lpad: function(str, char, size) {
+      return (str.length<size?this.lpad(char+str, char, size-1):str);
+    },
+};
+
+$(document).ready(function(){
+    $('button#add-work').on('click', function() {
+        state.modifyWork(1);});
+    $('button#d-work').on('click', function() {
+        state.modifyWork(-1);});
+    $('button#add-rest').on('click', function() {
+      state.modifyRest(1);});
+    $('button#d-rest').on('click', function() {
+        state.modifyRest(-1);});
+    $('div.indicator').on('click', function() {
+        state.onStart();
+    });
+    state.resetRemain();
+    state.setEndTime();
+    state.render();
+});

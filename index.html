@@ -12,10 +12,53 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="main.js"></script>
     -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico|Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 </head>
 <body>
-    <div>
-        <h1>Pomodoro Clock</h1>
+    <div class="main">
+        <p>FreeCodeCamp</p>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <div class="prompt">Work time: </div>
+                    <button id="d-work" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                        <i class="material-icons">remove</i>
+                    </button>
+
+                    <div id="work"></div>
+                    <button id="add-work" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <div class="prompt">Rest time: </div>
+                    <button id="d-rest" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                        <i class="material-icons">remove</i>
+                    </button>
+                    <div id="rest"></div>
+                    <button id="add-rest" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab">
+                        <i class="material-icons">add</i>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <div class="indicator">
+            <div id="time">
+                <div id="time-text">10:00</div>
+            </div>
+            <div class="wrapper" data-anim="base wrapper">
+                <div class="circle" data-anim="base left"></div>
+                <div class="circle" data-anim="base right"></div>
+
+            </div>
+        </div>
+
     </div>
     <script src="bundle.js"></script>
 </body>
