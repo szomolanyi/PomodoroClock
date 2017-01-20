@@ -24,16 +24,22 @@ div.row {
     justify-content: space-between;
 }
 div.indicator {
-    /*width: $main-width/2;*/ /* Set the size of the progress bar */
+    /*width: $main-width/2;*/
+    padding-top: 50px;
+    width: 100%;
     height: $main-width/2;
-    position: relative;
     top:50px;
     display: flex;
     justify-content: center;
     /*left: $main-width/4;*/
 }
-div#progress {
+div#prg {
   position: absolute;
+}
+div#progress {
+  position: relative;
+  width: $main-width/2;
+  height: $main-width/2;
 }
 div.prompt {
     text-align: center;
