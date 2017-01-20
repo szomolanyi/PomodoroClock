@@ -1,6 +1,7 @@
 //require("./styles/style.css");
 require("./styles/style.scss");
 require("jquery");
+var pb=require("progressbar.js");
 
 // Main app
 
@@ -15,10 +16,22 @@ var state={
       min: 20,
       sec: 5
     },
+    percent: 0,
+    progress: new pb.Circle('div#progress', {
+        color: '#FCB03C',
+        duration: 1000,
+        easing: 'linear',
+        strokeWidth: 10
+    }),
     render: function() {
         $('#work').text(this.work_time+' min');
         $('#rest').text(this.rest_time+' min');
-        $('#time-text').text(this.lpad(this.remaining_time.min.toString(), '0', 2)+':'+this.lpad(this.remaining_time.sec.toString(), '0', 2));
+        $('#time-text-out').text(this.lpad(this.remaining_time.min.toString(), '0', 2)+':'+this.lpad(this.remaining_time.sec.toString(), '0', 2));
+        if (this.rest_running)
+          $('#time-text-prompt').text('Rest');
+        else
+          $('#time-text-prompt').text('Work');
+        this.progress.animate(this.percent);
     },
     setEndTime: function() {
       /* sets end_time from remaining_time */
@@ -32,6 +45,12 @@ var state={
       var diff=Math.round((this.end_time-curr_time)/1000);
       this.remaining_time.min=Math.floor(diff/60);
       this.remaining_time.sec=diff%60;
+      if (this.work_running) {
+        this.percent=1-(this.remaining_time.min*60+this.remaining_time.sec)/(this.work_time*60);
+      }
+      else {
+        this.percent=1-(this.remaining_time.min*60+this.remaining_time.sec)/(this.rest_time*60);
+      }
     },
     resetRemain: function() {
       //reset remain on begin
@@ -45,13 +64,12 @@ var state={
       }
     },
     onStart: function() {
-      console.log('start click');
       var self=this;
       if (this.work_running || this.rest_running) {
         if (this.paused) { //resume from pause
           this.paused=false;
           this.setEndTime();
-          setTimeout(this.updateStatus, 500, self);
+          setTimeout(this.updateStatus, 1000, self);
         }
         else { //pause
           this.paused=true;
@@ -136,4 +154,12 @@ $(document).ready(function(){
     state.resetRemain();
     state.setEndTime();
     state.render();
+    /*
+    var circle = new pb.Circle('div.indicator', {
+        color: '#FCB03C',
+        duration: 3000,
+        easing: 'easeInOut'
+    });
+    circle.animate(0.5);
+    */
 });
