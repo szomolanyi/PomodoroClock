@@ -9,11 +9,11 @@ var state={
     work_running: false,
     rest_running: false,
     paused: false,
-    work_time: 2,
-    rest_time: 1,
+    work_time: 25,
+    rest_time: 5,
     end_time: undefined,
     remaining_time: {
-      min: 20,
+      min: 25,
       sec: 5
     },
     percent: 0,
