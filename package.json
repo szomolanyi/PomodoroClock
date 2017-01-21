@@ -1,7 +1,7 @@
 {
   "name": "fe_base",
   "version": "0.0.0",
-  "description": "Base repository for FE projects",
+  "description": "Pomodoro Clock",
   "main": "index.js",
   "scripts": {
     "webpack": "webpack",
@@ -24,4 +24,3 @@
     "webpack": "~1.13.3"
   }
 }
-
