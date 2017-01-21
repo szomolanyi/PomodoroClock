@@ -81,7 +81,7 @@ var state={
         this.rest_running=false;
         this.resetRemain();
         this.setEndTime();
-        setTimeout(this.updateStatus, 500, self);
+        setTimeout(this.updateStatus, 1000, self);
       }
     },
     updateStatus: function(self) {
@@ -97,7 +97,7 @@ var state={
         else {
           self.updateRemainfromEndTime();
         }
-        setTimeout(self.updateStatus, 500, self);
+        setTimeout(self.updateStatus, 1000, self);
         self.render();
       }
     },
